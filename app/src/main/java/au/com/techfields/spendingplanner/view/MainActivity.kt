@@ -1,7 +1,6 @@
 package au.com.techfields.spendingplanner.view
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
 import android.support.design.widget.TabLayout
 import android.support.v4.view.GravityCompat
@@ -10,7 +9,6 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import au.com.techfields.spendingplanner.R
 import au.com.techfields.spendingplanner.viewmodel.FragmentPagerAdapter
 import au.com.techfields.spendingplanner.viewmodel.FragmentTabsInit
