@@ -27,7 +27,7 @@ class TransactionItemAdapter(private val mTransactionItemList: ArrayList<Transac
         holder.mNameTv.text = transactionItemList.mName
         holder.mCategoryTv.text = transactionItemList.mCategoryId //Change to category name by looping Category instances of ArrayList from DB Categories
         if(transactionItemList.mAmount > 0) holder.mAmountTv.text = "\$${transactionItemList.mAmount}"
-        else holder.mAmountTv.text = "-$${transactionItemList.mAmount*(-1)}"
+        else holder.mAmountTv.text = "-$${-1 * transactionItemList.mAmount}"
     }
 
     override fun getItemCount(): Int {

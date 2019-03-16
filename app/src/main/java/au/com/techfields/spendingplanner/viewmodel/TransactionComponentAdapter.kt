@@ -17,9 +17,11 @@ import android.content.Context
 import android.text.Spannable
 import android.text.style.ForegroundColorSpan
 import android.text.SpannableString
+import android.util.Log
 
-class TransactionComponentAdapter(private val mTransactionComponentList: ArrayList<ArrayList<Transaction>>, private val mContext: Context) : RecyclerView.Adapter<TransactionComponentAdapter.MyViewHolder>() {
+class TransactionComponentAdapter(private val mTransactionComponentArrayList: ArrayList<ArrayList<Transaction>>, private val mContext: Context) : RecyclerView.Adapter<TransactionComponentAdapter.MyViewHolder>() {
     val Int.dp get() = (this * Resources.getSystem().displayMetrics.density).toInt()
+
     inner class MyViewHolder(view: View, currentViewPosition: Int) : RecyclerView.ViewHolder(view) {
         private val mCardView: CardView = view.findViewById(R.id.card_view)
         val mDateTv: TextView = view.findViewById(R.id.date_Tv)
@@ -40,46 +42,48 @@ class TransactionComponentAdapter(private val mTransactionComponentList: ArrayLi
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val transactionArrayList: ArrayList<Transaction> = mTransactionComponentList[position]
+        val transactionItemArrayList: ArrayList<Transaction> = mTransactionComponentArrayList[position]
         //Only if the transaction data exists, create a component and its items according to date assorted
-        //TODO: pass the date data as an argument
-        //if(date != null) { holder.mDateTv.text = date.toString() }
-        if(transactionArrayList.size > 0) {
+        if(transactionItemArrayList.size > 0) {
             var expenseTotalAmount: Double = 0.0
             var incomeTotalAmount: Double = 0.0
-            val calendar = transactionArrayList[0].mCalendar
+            val incomeString = "Income:"
+            val expesneString = "Expense:"
+            val calendar = transactionItemArrayList[0].mCalendar
             holder.mDateTv.text = calendar.get(Calendar.DATE).toString()
-            for(transaction in transactionArrayList) {
-                if(transaction.mType.equals(Transaction.TransactionType.Income)) incomeTotalAmount += transaction.mAmount
+            for(transaction in transactionItemArrayList) {
+                if(transaction.mType == Transaction.TransactionType.Income) incomeTotalAmount += transaction.mAmount
                 else expenseTotalAmount += transaction.mAmount * (-1)
             }
+            if(incomeTotalAmount > 0) setTotalAmountToString(incomeString, incomeTotalAmount, holder)
+            if(expenseTotalAmount > 0) setTotalAmountToString(expesneString, expenseTotalAmount, holder)
 
-            if(incomeTotalAmount > 0) {
-                val incomeTotalString = "Income: \$$incomeTotalAmount"
-                val spannableIncomeTotalString = SpannableString(incomeTotalString)
-                spannableIncomeTotalString.setSpan(ForegroundColorSpan(
-                        ContextCompat.getColor(mContext, R.color.incomeColor)), incomeTotalString.substring(0, 7).length, incomeTotalString.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-                holder.mIncomeTotalTv.setText(spannableIncomeTotalString, TextView.BufferType.SPANNABLE)
-                //margin income total textview
-                val layoutMarginParams = holder.mIncomeTotalTv.layoutParams as ViewGroup.MarginLayoutParams
-                layoutMarginParams.marginEnd = 10.dp
-            }
-
-            if(expenseTotalAmount > 0) {
-                val expenseTotalString= "Expense: \$$expenseTotalAmount"
-                val spannableExpenseTotalString = SpannableString(expenseTotalString)
-                spannableExpenseTotalString.setSpan(ForegroundColorSpan(
-                        ContextCompat.getColor(mContext, R.color.expenseColor)), expenseTotalString.substring(0, 8).length, expenseTotalString.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-                holder.mExpenseTotalTv.setText(spannableExpenseTotalString, TextView.BufferType.SPANNABLE)
-                //margin expense total textview
-                val layoutMarginParams = holder.mExpenseTotalTv.layoutParams as ViewGroup.MarginLayoutParams
-                layoutMarginParams.marginEnd = 10.dp
-            }
-            holder.mTransactionItemRv.adapter = TransactionItemAdapter(transactionArrayList)
+            holder.mTransactionItemRv.adapter = TransactionItemAdapter(transactionItemArrayList)
         }
     }
 
-    override fun getItemCount(): Int {
-        return mTransactionComponentList.size
+    private fun setTotalAmountToString(typeString: String, totalAmount: Double, holder: MyViewHolder) {
+        val totalTypeString = "$typeString \$$totalAmount"
+        val spannableTypeTotalString: SpannableString = SpannableString(totalTypeString)
+        val layoutMarginParams: ViewGroup.MarginLayoutParams
+        //Todo: Separate if statement with another method
+        if(typeString == "Income:") {
+            spannableTypeTotalString.setSpan(ForegroundColorSpan(
+                    ContextCompat.getColor(mContext, R.color.incomeColor)), totalTypeString.substring(0, typeString.length).length, totalTypeString.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            layoutMarginParams = holder.mIncomeTotalTv.layoutParams as ViewGroup.MarginLayoutParams
+            holder.mIncomeTotalTv.setText(spannableTypeTotalString, TextView.BufferType.SPANNABLE)
+        }
+        else {
+            spannableTypeTotalString.setSpan(ForegroundColorSpan(
+                    ContextCompat.getColor(mContext, R.color.expenseColor)), totalTypeString.substring(0, typeString.length).length, totalTypeString.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            layoutMarginParams = holder.mExpenseTotalTv.layoutParams as ViewGroup.MarginLayoutParams
+            holder.mExpenseTotalTv.setText(spannableTypeTotalString, TextView.BufferType.SPANNABLE)
+        }
+        layoutMarginParams.marginEnd = 10.dp
     }
+
+    override fun getItemCount(): Int {
+        return mTransactionComponentArrayList.size
+    }
+
 }
