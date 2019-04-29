@@ -2,43 +2,33 @@ package au.com.techfields.spendingplanner.view
 
 import android.os.Bundle
 import android.support.design.widget.NavigationView
-import android.support.design.widget.TabLayout
 import android.support.v4.view.GravityCompat
-import android.support.v4.view.ViewPager
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import au.com.techfields.spendingplanner.R
-import au.com.techfields.spendingplanner.viewmodel.FragmentPagerAdapter
 import au.com.techfields.spendingplanner.viewmodel.FragmentTabsInit
+import au.com.techfields.spendingplanner.viewmodel.MonthPickerInit
+import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-    private lateinit var mFragmentPagerAdapter: FragmentPagerAdapter
-    private lateinit var mViewPager: ViewPager
-    private lateinit var mTabLayout: TabLayout
-    private lateinit var mFragmentTabsInit: FragmentTabsInit
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        Realm.init(this)
         setSupportActionBar(toolbar)
-
+        supportActionBar!!.title = null
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
-
         nav_view.setNavigationItemSelectedListener(this)
-
-        mFragmentPagerAdapter = FragmentPagerAdapter(supportFragmentManager)
-        mTabLayout = findViewById(R.id.tabs)
-        mViewPager = findViewById(R.id.pager)
-        mFragmentTabsInit = FragmentTabsInit(mFragmentPagerAdapter, mTabLayout, mViewPager)
-
+        val fragmentsTabsInit = FragmentTabsInit(this)
+        MonthPickerInit(this, fragmentsTabsInit)
     }
-
 
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
@@ -87,4 +77,5 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
+
 }

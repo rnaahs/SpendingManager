@@ -16,7 +16,7 @@ class TransactionItemAdapter(private val mTransactionItemList: ArrayList<Transac
         val mCategoryTv:TextView = view.findViewById(R.id.transaction_item_category_tv)
         val mAmountTv:TextView = view.findViewById(R.id.transaction_item_amount_tv)
     }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TransactionItemAdapter.MyViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView = LayoutInflater.from(parent.context)
                 .inflate(R.layout.transaction_item, parent, false)
         return MyViewHolder(itemView)
@@ -27,7 +27,7 @@ class TransactionItemAdapter(private val mTransactionItemList: ArrayList<Transac
         holder.mNameTv.text = transactionItemList.mName
         holder.mCategoryTv.text = transactionItemList.mCategoryId //Change to category name by looping Category instances of ArrayList from DB Categories
         if(transactionItemList.mAmount > 0) holder.mAmountTv.text = "\$${transactionItemList.mAmount}"
-        else holder.mAmountTv.text = "-$${-1 * transactionItemList.mAmount}"
+        else holder.mAmountTv.text = "-\$${-1 * transactionItemList.mAmount}"
     }
 
     override fun getItemCount(): Int {

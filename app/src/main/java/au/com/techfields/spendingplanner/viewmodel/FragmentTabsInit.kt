@@ -3,17 +3,24 @@ package au.com.techfields.spendingplanner.viewmodel
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
 import au.com.techfields.spendingplanner.R
+import au.com.techfields.spendingplanner.view.MainActivity
 import au.com.techfields.spendingplanner.view.ReportMainFragment
 import au.com.techfields.spendingplanner.view.SummaryMainFragment
 import au.com.techfields.spendingplanner.view.TransactionMainFragment
+import au.com.techfields.spendingplanner.viewmodel.DatabaseAdapter.Companion.mDatabaseAdapter
+import kotlinx.android.synthetic.main.app_bar_main.*
 
-class FragmentTabsInit(fragmentPagerAdapter: FragmentPagerAdapter, tabLayout: TabLayout, viewPager: ViewPager) {
+class FragmentTabsInit(activity: MainActivity) {
+    private val mFragmentPagerAdapter: FragmentPagerAdapter = FragmentPagerAdapter(activity.supportFragmentManager)
+    private val mViewPager: ViewPager = activity.pager
+    private val mTabLayout: TabLayout = activity.tabs
+
     init {
-        setTabFragments(fragmentPagerAdapter)
-        viewPager.adapter = fragmentPagerAdapter
-        tabLayout.setupWithViewPager(viewPager)
-        setTabIcons(tabLayout)
-        setTabListener(tabLayout)
+        setTabFragments(mFragmentPagerAdapter)
+        mViewPager.adapter = mFragmentPagerAdapter
+        mTabLayout.setupWithViewPager(mViewPager)
+        setTabIcons(mTabLayout)
+        setTabListener(mTabLayout)
     }
 
     private fun setTabFragments(fragmentPagerAdapter: FragmentPagerAdapter) {
@@ -46,7 +53,34 @@ class FragmentTabsInit(fragmentPagerAdapter: FragmentPagerAdapter, tabLayout: Ta
                 }
             }
 
-            override fun onTabReselected(tab: TabLayout.Tab) { }
+            override fun onTabReselected(tab: TabLayout.Tab) {}
         })
+    }
+
+    fun notifyFragmentAdaptersChanged() {
+        val transactionFragment = mFragmentPagerAdapter.getItem(0) as TransactionMainFragment
+        val summaryFragment = mFragmentPagerAdapter.getItem(1) as SummaryMainFragment
+        transactionFragment.mTransactionComponentRv.adapter.notifyDataSetChanged()
+        with(summaryFragment) {
+            mExpenseCategoryRv.adapter.notifyDataSetChanged()
+            mIncomeCategoryRv.adapter.notifyDataSetChanged()
+            setAdapterProperties(this)
+        }
+    }
+
+    private fun setAdapterProperties(summaryFragment: SummaryMainFragment) {
+        with(summaryFragment) {
+            with(DatabaseAdapter.mDatabaseAdapter) {
+                totalIncomeAmount = getTotalAmount(mSummaryIncomeArrayList)
+                totalExpenseAmount = getTotalAmount(mSummaryExpenseArrayList)
+                totalAmount = getTotalAmount(mSummaryIncomeArrayList, mSummaryExpenseArrayList)
+                summaryFragment.setRecyclerViewParams(mSummaryIncomeArrayList, mSummaryExpenseArrayList, mIncomeCategoryRv, mExpenseCategoryRv, mSummaryView)
+            }
+            mSummaryTotalIncomeAmountTv.text = setTotalAmountText(mDatabaseAdapter.totalIncomeAmount)
+            mSummaryTotalExpenseAmountTv.text = setTotalAmountText(mDatabaseAdapter.totalExpenseAmount)
+            mSummaryTotalStatusTv.text = setTotalStatusText(mDatabaseAdapter.totalAmount)
+            mSummaryTotalAmountTv.text = setTotalAmountText(mDatabaseAdapter.totalAmount)
+            mSummaryTotalAmountTv.setTextColor(setTotalAmountColor(mDatabaseAdapter.totalAmount, mSummaryView))
+        }
     }
 }

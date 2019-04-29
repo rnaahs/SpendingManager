@@ -9,7 +9,7 @@ import au.com.techfields.spendingplanner.R
 import au.com.techfields.spendingplanner.model.Category
 
 
-class SummaryTypeAdapter(private val mCategoryIncomeList: ArrayList<Category>) : RecyclerView.Adapter<SummaryTypeAdapter.MyViewHolder>() {
+class SummaryCategoryTypeAdapter(private val mCategoryIncomeList: ArrayList<Category>) : RecyclerView.Adapter<SummaryCategoryTypeAdapter.MyViewHolder>() {
     inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val mNameTv: TextView = view.findViewById(R.id.category_name_tv)
         val mTotalAmountTv: TextView = view.findViewById(R.id.category_amount_tv)
@@ -17,7 +17,7 @@ class SummaryTypeAdapter(private val mCategoryIncomeList: ArrayList<Category>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(parent.context)
-                .inflate(au.com.techfields.spendingplanner.R.layout.summary_item, parent, false)
+                .inflate(R.layout.summary_item, parent, false)
         return MyViewHolder(view)
     }
 
@@ -29,5 +29,5 @@ class SummaryTypeAdapter(private val mCategoryIncomeList: ArrayList<Category>) :
 
     override fun getItemCount(): Int = mCategoryIncomeList.size
 
-    private fun setAmountText(amount: Double) = if(amount > 0) "$$amount" else "$${-1 * amount}"
+    private fun setAmountText(amount: Double) = if(amount > 0) "$$amount" else "-\$${-1 * amount}"
 }

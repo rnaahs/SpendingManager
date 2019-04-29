@@ -1,122 +1,154 @@
 package au.com.techfields.spendingplanner.viewmodel
 
+import android.content.Context
+import android.graphics.Point
+import android.util.Log
+import android.view.View
+import android.view.WindowManager
 import au.com.techfields.spendingplanner.model.Category
 import au.com.techfields.spendingplanner.model.Transaction
+import au.com.techfields.spendingplanner.viewmodel.MonthPickerInit.Companion.dateToCalendar
+import io.realm.ImportFlag
+import io.realm.Realm
+import io.realm.kotlin.where
+import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 
 class DatabaseAdapter {
-    private val mTransactionArrayList = arrayListOf<Transaction>()
+    private var mTransactionArrayList = getTransactionsFromDb()
+    private val mCategoryArrayList = arrayListOf<Category>()
     val mTransactionComponentArrayList = arrayListOf<ArrayList<Transaction>>()
     val mSummaryExpenseArrayList = arrayListOf<Category>()
     val mSummaryIncomeArrayList = arrayListOf<Category>()
+    var totalIncomeAmount = getTotalAmount(mSummaryIncomeArrayList)
+    var totalExpenseAmount = getTotalAmount(mSummaryExpenseArrayList)
+    var totalAmount = getTotalAmount(mSummaryIncomeArrayList, mSummaryExpenseArrayList)
 
     init {
-        addTransactionsFromDB()
-        addCategoriesFromDB()
+        sortTransactionComponentsByDate(Calendar.getInstance())
+        sortCategoriesByDate()
     }
 
     companion object {
         val mDatabaseAdapter: DatabaseAdapter = DatabaseAdapter()
     }
 
-    fun getSummaryTypeAdapter(summaryTypeArrayList: ArrayList<Category>) =  SummaryTypeAdapter(summaryTypeArrayList)
+    fun getSummaryCategoryTypeAdapter(summaryTypeArrayList: ArrayList<Category>) = SummaryCategoryTypeAdapter(summaryTypeArrayList)
 
     fun getTotalAmount(vararg totalAmountArrayLists: ArrayList<Category>): Double {
         var totalAmount = 0.0
-        for(index in totalAmountArrayLists.indices) {
-            for(category in totalAmountArrayLists[index]) {
+        for (index in totalAmountArrayLists.indices) {
+            for (category in totalAmountArrayLists[index]) {
                 totalAmount += category.mAmount
             }
         }
         return totalAmount
     }
 
-    private fun addTransactionsFromDB() {
-        val calendar1 = Calendar.getInstance()
-        val calendar2= Calendar.getInstance()
-        val calendar3 = Calendar.getInstance()
-        val calendar4 = Calendar.getInstance()
-        val calendar5 = Calendar.getInstance()
-        val calendar6 = Calendar.getInstance()
-        val calendar7 = Calendar.getInstance()
-        calendar1.set(2019, 1, 26, 10, 44, 11)
-        calendar2.set(2019, 1, 26, 11, 44, 11)
-        calendar3.set(2019, 1, 27, 10, 44, 11)
-        calendar4.set(2019, 1, 27, 11, 44, 11)
-        calendar5.set(2019, 1, 28, 10, 44, 11)
-        calendar6.set(2019, 1, 26, 10, 44, 12)
-        calendar7.set(2019, 1, 26, 10, 44, 13)
-        val transactionRecord1 = Transaction("0", "Transaction1", 500.0, calendar1, Transaction.TransactionType.Income, "0")
-        val transactionRecord2 = Transaction("1", "Transaction2", -30.5, calendar2, Transaction.TransactionType.Expense, "1")
-        val transactionRecord3 = Transaction("2", "Transaction3", 700.0, calendar3, Transaction.TransactionType.Income, "0")
-        val transactionRecord4 = Transaction("3", "Transaction4", -130.5, calendar4, Transaction.TransactionType.Expense, "1")
-        val transactionRecord5 = Transaction("4", "Transaction5", 245.5, calendar5, Transaction.TransactionType.Income, "0")
-        val transactionRecord6 = Transaction("5", "Transaction6", 245.5, calendar6, Transaction.TransactionType.Income, "0")
-        val transactionRecord7 = Transaction("6", "Transaction7", -26.5, calendar7, Transaction.TransactionType.Expense, "1")
-        mTransactionArrayList.add(transactionRecord3)
-        mTransactionArrayList.add(transactionRecord1)
-        mTransactionArrayList.add(transactionRecord2)
-        mTransactionArrayList.add(transactionRecord5)
-        mTransactionArrayList.add(transactionRecord4)
-        mTransactionArrayList.add(transactionRecord6)
-        mTransactionArrayList.add(transactionRecord7)
-        sortTransactionComponentsByDate()
-    }
-/*Invoke when adding categories from DB
-* Add the total number of categories to Category ArrayList which is either income or expense*/
-    private fun addCategoriesFromDB() {
-        val categoryRecord1 = Category("0", "Category1", 1.0, "Income", 123, "156")
-        val categoryRecord2 = Category("1", "Category2", -187.5, "Expense", 125, "157")
-    val categoryRecord3 = Category("0", "Category3", 1.0, "Income", 123, "156")
-    val categoryRecord4 = Category("1", "Category4", -187.5, "Expense", 125, "157")
-    val categoryRecord5 = Category("0", "Category5", 1.0, "Income", 123, "156")
-    val categoryRecord6 = Category("1", "Category6", -187.5, "Expense", 125, "157")
-    val categoryRecord7 = Category("0", "Category7", 1.0, "Income", 123, "156")
-    val categoryRecord8 = Category("1", "Category8", -187.5, "Expense", 125, "157")
-    val categoryRecord9 = Category("0", "Category9", 1.0, "Income", 123, "156")
-    val categoryRecord10 = Category("1", "Category10", -187.5, "Expense", 125, "157")
-    val categoryRecord11= Category("0", "Category11", 1.0, "Income", 123, "156")
-    val categoryRecord12 = Category("1", "Category12", -187.5, "Expense", 125, "157")
-        mSummaryIncomeArrayList.add(categoryRecord1)
-        mSummaryExpenseArrayList.add(categoryRecord2)
-    mSummaryIncomeArrayList.add(categoryRecord3)
-    mSummaryExpenseArrayList.add(categoryRecord4)
-    mSummaryIncomeArrayList.add(categoryRecord5)
-    mSummaryExpenseArrayList.add(categoryRecord6)
-    mSummaryIncomeArrayList.add(categoryRecord7)
-    mSummaryExpenseArrayList.add(categoryRecord8)
-    mSummaryIncomeArrayList.add(categoryRecord9)
-    mSummaryExpenseArrayList.add(categoryRecord10)
-    mSummaryIncomeArrayList.add(categoryRecord11)
-    mSummaryExpenseArrayList.add(categoryRecord12)
-    }
-    /*Invoke when adding transaction to DB */
-    fun setTransactionToDB() {
-
-    }
-    /*Invoke when adding new category to DB*/
-    fun setCategoryToDB() {
-
+    fun addTransactionsToDb() {
+        val realmInstance = Realm.getDefaultInstance()
+        realmInstance.executeTransactionAsync({ realm ->
+            realm.copyToRealm(mTransactionArrayList, ImportFlag.CHECK_SAME_VALUES_BEFORE_SET)
+        }, {
+            Log.i("Success", "Data inserted to Realm DB")
+        }, {
+            Log.e("Fail", it.message, Exception(it.cause))
+        })
+        realmInstance.close()
     }
 
-    //TODO: sortByDate method must take account of weekly, mothly, and yearly with parameters given
-    private fun sortTransactionComponentsByDate() {
-        var day = 0
-        var transactionItemArrayList = arrayListOf<Transaction>()
-        //sort by date
-        val sortedTransactionList = mTransactionArrayList.sortedWith(Transaction.SortByDateTransactionComparator)
-        for(transaction in sortedTransactionList) {
-            if(day == 0) {
-                day = transaction.mCalendar.get(Calendar.DATE)
+    fun getTransactionsFromDb(): ArrayList<Transaction> {
+        val realmInstance = Realm.getDefaultInstance()
+        val realmResultOfTransaction = realmInstance.where<Transaction>().findAll()
+        val transactionList = arrayListOf<Transaction>()
+        transactionList.addAll(realmInstance.copyFromRealm(realmResultOfTransaction))
+        realmInstance.close()
+        return transactionList
+    }
+
+    fun updateTransactionsFromDb() {
+        val realmInstance = Realm.getDefaultInstance()
+        val realmResultOfTransaction = realmInstance.where<Transaction>().findAll()
+        mTransactionArrayList.clear()
+        mTransactionArrayList.addAll(realmInstance.copyFromRealm(realmResultOfTransaction))
+        realmInstance.close()
+    }
+
+    fun sortCategoriesByDate() {
+        mSummaryIncomeArrayList.clear()
+        mSummaryExpenseArrayList.clear()
+        mCategoryArrayList.clear()
+        var isCategoryMatched = false
+        for (transactionArrayList in mTransactionComponentArrayList) {
+            for(transaction in transactionArrayList) {
+                if(mCategoryArrayList.size == 0) {
+                    mCategoryArrayList.add(Category(transaction.mCategoryId, "Category${transaction.mCategoryId.toInt()+1}", transaction.mAmount, transaction.mType, 123, "156"))
+                } else {
+                    for(category in mCategoryArrayList) {
+                        if(transaction.mCategoryId == category.mId) {
+                            category.mAmount += transaction.mAmount
+                            isCategoryMatched = true
+                        }
+                    }
+                    if(!isCategoryMatched) mCategoryArrayList.add(Category(transaction.mCategoryId, "Category${transaction.mCategoryId.toInt()+1}", transaction.mAmount, transaction.mType, 123, "156"))
+                    isCategoryMatched = false
+                }
             }
-            else if(day != 0 && day != transaction.mCalendar.get(Calendar.DATE)) {
+        }
+        setCategoryTypeArrayList()
+    }
+
+    private fun setCategoryTypeArrayList() {
+        val categorySortedByDateList = mCategoryArrayList.sortedWith(Category.SortCategoryAmountByAscendingOrder)
+        for (category in categorySortedByDateList) {
+            if (category.mType == Transaction.TransactionType.Income.name)
+                mSummaryIncomeArrayList.add(0, category)
+            else if (category.mType == Transaction.TransactionType.Expense.name)
+                mSummaryExpenseArrayList.add(category)
+        }
+    }
+
+    fun sortTransactionComponentsByDate(calendar: Calendar) {
+        var day = 0
+        mTransactionComponentArrayList.clear()
+        var transactionItemArrayList = arrayListOf<Transaction>()
+        val transactionSortedByMonthYearList = sortTransactionsByMonthYear(mTransactionArrayList, calendar)
+        val transactionSortedByDateList = transactionSortedByMonthYearList.sortedWith(Transaction.SortByDateTransactionComparator)
+        for (transaction in transactionSortedByDateList) {
+            if (day == 0) {
+                day = dateToCalendar(transaction.mDate).get(Calendar.DATE)
+            } else if (day != 0 && day != dateToCalendar(transaction.mDate).get(Calendar.DATE)) {
                 mTransactionComponentArrayList.add(transactionItemArrayList)
                 transactionItemArrayList = arrayListOf()
-                day = transaction.mCalendar.get(Calendar.DATE)
+                day = dateToCalendar(transaction.mDate).get(Calendar.DATE)
             }
+
             transactionItemArrayList.add(transaction)
         }
-        if(transactionItemArrayList.isNotEmpty()) mTransactionComponentArrayList.add(transactionItemArrayList)
+        if (transactionItemArrayList.isNotEmpty()) mTransactionComponentArrayList.add(transactionItemArrayList)
+    }
+
+
+    private fun sortTransactionsByMonthYear(transactionSortedList: ArrayList<Transaction>, calendar: Calendar): ArrayList<Transaction> {
+        val sortTransactionListByMonth = arrayListOf<Transaction>()
+        for (transaction in transactionSortedList) {
+
+            if (calendar.get(Calendar.YEAR) == dateToCalendar(transaction.mDate).get(Calendar.YEAR) &&
+                    calendar.get(Calendar.MONTH) == dateToCalendar(transaction.mDate).get(Calendar.MONTH)) {
+                sortTransactionListByMonth.add(transaction)
+            }
+        }
+        return sortTransactionListByMonth
+    }
+
+    fun getResizedHeight(height: Int, view: View): Int = (setPointToResize(view).y * height * 0.01).toInt()
+    fun getResizedWidth(width: Int, view: View): Int = (setPointToResize(view).x * width * 0.01).toInt()
+
+    private fun setPointToResize(view: View): Point {
+        val wm = view.context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val point = Point()
+        wm.defaultDisplay.getRealSize(point)
+        return point
     }
 }

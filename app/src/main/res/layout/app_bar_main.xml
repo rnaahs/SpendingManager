@@ -11,12 +11,59 @@
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
+
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:contentInsetStart="0dp"
+            app:contentInsetStartWithNavigation="0dp"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+
+                <Button
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:id="@+id/decrement_month_btn"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:drawableStart="@drawable/ic_toolbar_left"
+                    android:layout_marginStart="-5dp"
+                    android:paddingStart="7.5dp"
+                    android:paddingEnd="7.5dp"
+                    />
+
+                <Button
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:id="@+id/month_year_filtered_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toEndOf="@id/decrement_month_btn"
+                    android:layout_marginStart="-10dp"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+                <Button
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:id="@+id/increment_month_btn"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:layout_toEndOf="@id/month_year_filtered_btn"
+                    android:layout_marginStart="-10dp"
+                    android:drawableStart="@drawable/ic_toolbar_right"
+                    android:paddingStart="7.5dp"
+                    android:paddingEnd="7.5dp"
+                    />
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.Toolbar>
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tabs"

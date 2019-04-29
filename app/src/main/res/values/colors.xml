@@ -6,4 +6,6 @@
     <color name="dividerColor">#ddd</color>
     <color name="incomeColor">#06a65b</color>
     <color name="expenseColor">#c3272b</color>
+    <color name="blackColor">#000000</color>
+    <color name="white">#FFFFFF</color>
 </resources>

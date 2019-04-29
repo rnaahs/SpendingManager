@@ -1,12 +1,15 @@
 <resources>
+    <!--App System String-->
     <string name="app_name">SpendingPlanner</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_card_demo">CardDemoActivity</string>
+
+    <!--Transaction Category Type Names -->
     <string name="income">Income</string>
     <string name="expense">Expense</string>
+    <string name="action_settings">Setting</string>
+    <string name="title_activity_add_transaction">AddTransactionActivity</string>
 </resources>

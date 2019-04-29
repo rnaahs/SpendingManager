@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 
 import au.com.techfields.spendingplanner.R
+
 class ReportMainFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_report_main, container, false)
+        val reportView = inflater.inflate(R.layout.fragment_report_main, container, false)
+        return reportView
     }
 }
