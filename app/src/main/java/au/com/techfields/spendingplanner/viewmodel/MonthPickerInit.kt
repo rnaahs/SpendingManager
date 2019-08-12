@@ -17,7 +17,7 @@ import java.util.*
 
 
 
-class MonthPickerInit(activity: MainActivity, private val fragmentTabs: FragmentTabsInit) {
+class MonthPickerInit(activity: MainActivity, private val fragmentTransactionTabs: FragmentTransactionTabsInit) {
     private val mPopupView: View = activity.layoutInflater.inflate(R.layout.month_picker_popup, activity.window.findViewById(R.id.container))
     private val mYearFilteredTv: TextView = mPopupView.year_filtered_tv
     private val mDateFilteredBtn: Button = activity.month_year_filtered_btn
@@ -67,12 +67,12 @@ class MonthPickerInit(activity: MainActivity, private val fragmentTabs: Fragment
             mDateFilteredBtn.text = dateToString(dateInstance.time, "MMM yyyy")
             mDatabaseAdapter.sortTransactionComponentsByDate(dateInstance)
             mDatabaseAdapter.sortCategoriesByDate()
-            fragmentTabs.notifyFragmentAdaptersChanged()
+            fragmentTransactionTabs.notifyFragmentAdaptersChanged()
             popupWindow.dismiss()
         }
         mCloseBtn.setOnClickListener { popupWindow.dismiss() }
-        mFirstMonthsRv.adapter = MonthItemAdapter(activity, fragmentTabs, firstMonthsList, popupWindow)
-        mSecondMonthsRv.adapter = MonthItemAdapter(activity, fragmentTabs, secondMonthsList, popupWindow)
+        mFirstMonthsRv.adapter = MonthItemAdapter(activity, fragmentTransactionTabs, firstMonthsList, popupWindow)
+        mSecondMonthsRv.adapter = MonthItemAdapter(activity, fragmentTransactionTabs, secondMonthsList, popupWindow)
         mFirstMonthsRv.layoutManager = LinearLayoutManager(mPopupView.context, LinearLayoutManager.HORIZONTAL, false)
         mSecondMonthsRv.layoutManager = LinearLayoutManager(mPopupView.context, LinearLayoutManager.HORIZONTAL, false)
     }
@@ -91,13 +91,13 @@ class MonthPickerInit(activity: MainActivity, private val fragmentTabs: Fragment
             setDateFilteredWidget(Calendar.MONTH, 1)
             mDatabaseAdapter.sortTransactionComponentsByDate(dateInstance)
             mDatabaseAdapter.sortCategoriesByDate()
-            fragmentTabs.notifyFragmentAdaptersChanged()
+            fragmentTransactionTabs.notifyFragmentAdaptersChanged()
         }
         mMonthDecrementBtn.setOnClickListener {
             setDateFilteredWidget(Calendar.MONTH, -1)
             mDatabaseAdapter.sortTransactionComponentsByDate(dateInstance)
             mDatabaseAdapter.sortCategoriesByDate()
-            fragmentTabs.notifyFragmentAdaptersChanged()
+            fragmentTransactionTabs.notifyFragmentAdaptersChanged()
         }
     }
 

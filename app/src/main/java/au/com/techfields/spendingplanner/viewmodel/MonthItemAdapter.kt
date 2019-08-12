@@ -14,7 +14,7 @@ import au.com.techfields.spendingplanner.viewmodel.MonthPickerInit.Companion.yea
 import kotlinx.android.synthetic.main.app_bar_main.*
 import java.util.*
 
-class MonthItemAdapter(private val activity: MainActivity, private val fragmentTabsInit: FragmentTabsInit, private val monthsList: IntArray, private val popupWindow: PopupWindow) : RecyclerView.Adapter<MonthItemAdapter.MyViewHolder>() {
+class MonthItemAdapter(private val activity: MainActivity, private val fragmentTransactionTabsInit: FragmentTransactionTabsInit, private val monthsList: IntArray, private val popupWindow: PopupWindow) : RecyclerView.Adapter<MonthItemAdapter.MyViewHolder>() {
     inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val mMonthBtn: Button = view.findViewById(R.id.month_name_btn)
         val monthInstance: Calendar = Calendar.getInstance()
@@ -36,7 +36,7 @@ class MonthItemAdapter(private val activity: MainActivity, private val fragmentT
             activity.month_year_filtered_btn.text = dateToString(dateInstance.time, "MMM yyyy")
             DatabaseAdapter.mDatabaseAdapter.sortTransactionComponentsByDate(dateInstance)
             DatabaseAdapter.mDatabaseAdapter.sortCategoriesByDate()
-            fragmentTabsInit.notifyFragmentAdaptersChanged()
+            fragmentTransactionTabsInit.notifyFragmentAdaptersChanged()
             popupWindow.dismiss()
         }
     }

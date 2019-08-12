@@ -10,7 +10,7 @@ import au.com.techfields.spendingplanner.view.TransactionMainFragment
 import au.com.techfields.spendingplanner.viewmodel.DatabaseAdapter.Companion.mDatabaseAdapter
 import kotlinx.android.synthetic.main.app_bar_main.*
 
-class FragmentTabsInit(activity: MainActivity) {
+class FragmentTransactionTabsInit(activity: MainActivity) {
     private val mFragmentPagerAdapter: FragmentPagerAdapter = FragmentPagerAdapter(activity.supportFragmentManager)
     private val mViewPager: ViewPager = activity.pager
     private val mTabLayout: TabLayout = activity.tabs
@@ -70,7 +70,7 @@ class FragmentTabsInit(activity: MainActivity) {
 
     private fun setAdapterProperties(summaryFragment: SummaryMainFragment) {
         with(summaryFragment) {
-            with(DatabaseAdapter.mDatabaseAdapter) {
+            with(mDatabaseAdapter) {
                 totalIncomeAmount = getTotalAmount(mSummaryIncomeArrayList)
                 totalExpenseAmount = getTotalAmount(mSummaryExpenseArrayList)
                 totalAmount = getTotalAmount(mSummaryIncomeArrayList, mSummaryExpenseArrayList)

@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import au.com.techfields.spendingplanner.R
-import au.com.techfields.spendingplanner.viewmodel.FragmentTabsInit
+import au.com.techfields.spendingplanner.viewmodel.FragmentTransactionTabsInit
 import au.com.techfields.spendingplanner.viewmodel.MonthPickerInit
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_main.*
@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
-        val fragmentsTabsInit = FragmentTabsInit(this)
+        val fragmentsTabsInit = FragmentTransactionTabsInit(this)
         MonthPickerInit(this, fragmentsTabsInit)
     }
 
