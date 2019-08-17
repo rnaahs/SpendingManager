@@ -12,22 +12,22 @@ import au.com.techfields.spendingplanner.viewmodel.pager.FragmentPagerAdapter
 import kotlinx.android.synthetic.main.app_bar_main.*
 
 class MainFragmentTabsInit(activity: MainActivity) {
-    private val mFragmentPagerAdapter: FragmentPagerAdapter = FragmentPagerAdapter(activity.supportFragmentManager)
-    private val mViewPager: ViewPager = activity.pager
+    private val mMainFragmentPagerAdapter: FragmentPagerAdapter = FragmentPagerAdapter(activity.supportFragmentManager)
+    private val mViewPager: ViewPager = activity.mainpager
     private val mTabLayout: TabLayout = activity.maintabs
 
     init {
-        setTabFragments(mFragmentPagerAdapter, activity)
-        mViewPager.adapter = mFragmentPagerAdapter
+        setTabFragments(mMainFragmentPagerAdapter, activity)
+        mViewPager.adapter = mMainFragmentPagerAdapter
         mTabLayout.setupWithViewPager(mViewPager)
         setTabIcons(mTabLayout)
         setTabListener(mTabLayout)
     }
 
-    private fun setTabFragments(fragmentPagerAdapter: FragmentPagerAdapter, activity: MainActivity) {
-        fragmentPagerAdapter.addFragment(TransactionMainFragment(),  activity.resources.getString(R.string.tab_title_transaction))
-        fragmentPagerAdapter.addFragment(SummaryMainFragment(), activity.resources.getString(R.string.tab_title_summary))
-        fragmentPagerAdapter.addFragment(ReportMainFragment(), activity.resources.getString(R.string.tab_title_report))
+    private fun setTabFragments(mainFragmentPagerAdapter: FragmentPagerAdapter, activity: MainActivity) {
+        mainFragmentPagerAdapter.addFragment(TransactionMainFragment(),  activity.resources.getString(R.string.tab_title_transaction))
+        mainFragmentPagerAdapter.addFragment(SummaryMainFragment(), activity.resources.getString(R.string.tab_title_summary))
+        mainFragmentPagerAdapter.addFragment(ReportMainFragment(), activity.resources.getString(R.string.tab_title_report))
     }
 
     private fun setTabIcons(tabLayout: TabLayout) {
@@ -59,8 +59,8 @@ class MainFragmentTabsInit(activity: MainActivity) {
     }
 
     fun notifyFragmentAdaptersChanged() {
-        val transactionFragment = mFragmentPagerAdapter.getItem(0) as TransactionMainFragment
-        val summaryFragment = mFragmentPagerAdapter.getItem(1) as SummaryMainFragment
+        val transactionFragment = mMainFragmentPagerAdapter.getItem(0) as TransactionMainFragment
+        val summaryFragment = mMainFragmentPagerAdapter.getItem(1) as SummaryMainFragment
         transactionFragment.mTransactionComponentRv.adapter!!.notifyDataSetChanged()
         with(summaryFragment) {
             mExpenseCategoryRv.adapter!!.notifyDataSetChanged()

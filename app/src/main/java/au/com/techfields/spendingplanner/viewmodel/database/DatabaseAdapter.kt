@@ -66,8 +66,8 @@ class DatabaseAdapter {
         transactionList.addAll(realmInstance.copyFromRealm(realmResultOfTransaction))
         realmInstance.close()
 
-
-        /*val transactionList = arrayListOf<Transaction>()
+        /*
+        val transactionList = arrayListOf<Transaction>()
         val calendar1 = Calendar.getInstance()
         val calendar2 = Calendar.getInstance()
         val calendar3 = Calendar.getInstance()
@@ -82,20 +82,20 @@ class DatabaseAdapter {
         val calendar12 = Calendar.getInstance()
         val calendar13 = Calendar.getInstance()
         val calendar14 = Calendar.getInstance()
-        calendar1.set(2019, Calendar.JANUARY, 26, 10, 44, 11)
-        calendar2.set(2019, Calendar.JANUARY, 26, 11, 44, 11)
-        calendar3.set(2019, Calendar.JANUARY, 27, 10, 44, 11)
-        calendar4.set(2019, Calendar.JANUARY, 27, 11, 44, 11)
-        calendar5.set(2019, Calendar.JANUARY, 28, 10, 44, 11)
-        calendar6.set(2019, Calendar.MARCH, 26, 10, 44, 12)
-        calendar7.set(2019, Calendar.FEBRUARY, 26, 10, 44, 13)
+        calendar1.set(2019, Calendar.AUGUST, 26, 10, 44, 11)
+        calendar2.set(2019, Calendar.AUGUST, 26, 11, 44, 11)
+        calendar3.set(2019, Calendar.AUGUST, 27, 10, 44, 11)
+        calendar4.set(2019, Calendar.AUGUST, 27, 11, 44, 11)
+        calendar5.set(2019, Calendar.AUGUST, 28, 10, 44, 11)
+        calendar6.set(2019, Calendar.JULY, 26, 10, 44, 12)
+        calendar7.set(2019, Calendar.JUNE, 26, 10, 44, 13)
         calendar8.set(2019, Calendar.JANUARY, 26, 10, 44, 11)
         calendar9.set(2019, Calendar.JANUARY, 26, 11, 44, 11)
-        calendar10.set(2019, Calendar.JANUARY, 27, 10, 44, 11)
-        calendar11.set(2019, Calendar.JANUARY, 14, 11, 44, 11)
-        calendar12.set(2019, Calendar.JANUARY, 13, 10, 44, 11)
-        calendar13.set(2019, Calendar.JANUARY, 12, 11, 44, 12)
-        calendar14.set(2019, Calendar.MARCH, 11, 10, 44, 13)
+        calendar10.set(2019, Calendar.AUGUST, 27, 10, 44, 11)
+        calendar11.set(2019, Calendar.AUGUST, 14, 11, 44, 11)
+        calendar12.set(2019, Calendar.MARCH, 13, 10, 44, 11)
+        calendar13.set(2019, Calendar.APRIL, 12, 11, 44, 12)
+        calendar14.set(2019, Calendar.MAY, 11, 10, 44, 13)
         val transactionRecord1 = Transaction("0", "Transaction1", 500.0,  calendar1.time, Transaction.TransactionType.Income.name, "0")
         val transactionRecord2 = Transaction("1", "Transaction2", 830.5, calendar2.time, Transaction.TransactionType.Income.name, "10")
         val transactionRecord3 = Transaction("2", "Transaction3", -700.0, calendar3.time, Transaction.TransactionType.Expense.name, "2")
@@ -143,7 +143,9 @@ class DatabaseAdapter {
         transactionList.add(transactionRecord21)
         transactionList.add(transactionRecord22)
         transactionList.add(transactionRecord23)
-        transactionList.add(transactionRecord24)*/
+        transactionList.add(transactionRecord24)
+        addTransactionsToDb()
+        */
 
         return transactionList
     }

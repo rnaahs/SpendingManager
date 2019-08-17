@@ -18,22 +18,22 @@ import kotlinx.android.synthetic.main.fragment_main_transaction.view.*
 
 class TransactionMainFragment : Fragment() {
     lateinit var mTransactionComponentRv: RecyclerView
+    lateinit var mTransactionView: View
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val componentView = inflater.inflate(R.layout.fragment_main_transaction, container, false)
-        mTransactionComponentRv = componentView.findViewById(R.id.transaction_rv)
-        mTransactionComponentRv.layoutManager = LinearLayoutManager(componentView.context)
-        mTransactionComponentRv.adapter = TransactionComponentAdapter(DatabaseAdapter.mDatabaseAdapter.mTransactionComponentArrayList, componentView.context)
-        componentView.add_transaction_btn.setOnClickListener {
-            val intent = Intent(componentView.context, AddTransactionActivity::class.java)
+        mTransactionView = inflater.inflate(R.layout.fragment_main_transaction, container, false)
+        mTransactionComponentRv = mTransactionView.findViewById(R.id.transaction_rv)
+        mTransactionComponentRv.layoutManager = LinearLayoutManager(mTransactionView.context)
+        mTransactionComponentRv.adapter = TransactionComponentAdapter(DatabaseAdapter.mDatabaseAdapter.mTransactionComponentArrayList, mTransactionView.context)
+        mTransactionView.add_transaction_btn.setOnClickListener {
+            val intent = Intent(mTransactionView.context, AddTransactionActivity::class.java)
             startActivityForResult(intent, container!!.resources.getInteger(R.integer.add_transaction_code))
         }
-        return componentView
+        return mTransactionView
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         //Respond sth based on the previous activity
-        Log.d("TEST", Realm.getDefaultInstance().configuration.realmDirectory.absolutePath)
     }
 }

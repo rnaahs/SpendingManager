@@ -14,6 +14,8 @@
     <string name="tab_title_transaction">Transaction</string>
     <string name="tab_title_summary">Summary</string>
     <string name="tab_title_report">Report</string>
+    <string name="tab_title_income">Income</string>
+    <string name="tab_title_expense">Expense</string>
 
     <!--Summary Status String-->
     <string name="summary_status_balanced">Balanced</string>
