@@ -7,9 +7,35 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
 
-    <!--Transaction Category Type Names -->
+    <!--Activity Title String-->
+    <string name="title_activity_add_transaction">AddTransactionActivity</string>
+
+    <!--Tab Title String-->
+    <string name="tab_title_transaction">Transaction</string>
+    <string name="tab_title_summary">Summary</string>
+    <string name="tab_title_report">Report</string>
+
+    <!--Summary Status String-->
+    <string name="summary_status_balanced">Balanced</string>
+    <string name="summary_status_overspending">Overspending</string>
+    <string name="summary_status_remaining">Remaining</string>
+
+    <!--Transaction Category String -->
     <string name="income">Income</string>
     <string name="expense">Expense</string>
+
+    <!--Global Status String-->
+    <string name="status_minus">-</string>
+    <string name="status_plus">+</string>
+
+    <!--Date Format String-->
+    <string name="au_month_date_format">MMM</string>
+    <string name="au_month_year_date_format">MMM yyyy</string>
+
+    <!--Currency Sign String-->
+    <string name="currency_dollar_sign">$</string>
+
+    <!--Setting-->
     <string name="action_settings">Setting</string>
-    <string name="title_activity_add_transaction">AddTransactionActivity</string>
+
 </resources>

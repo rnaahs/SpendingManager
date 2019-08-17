@@ -1,4 +1,4 @@
-package au.com.techfields.spendingplanner.viewmodel
+package au.com.techfields.spendingplanner.viewmodel.init
 
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
@@ -8,17 +8,18 @@ import android.widget.Button
 import android.widget.PopupWindow
 import android.widget.TextView
 import au.com.techfields.spendingplanner.R
-import au.com.techfields.spendingplanner.view.MainActivity
-import au.com.techfields.spendingplanner.viewmodel.DatabaseAdapter.Companion.mDatabaseAdapter
+import au.com.techfields.spendingplanner.view.activity.MainActivity
+import au.com.techfields.spendingplanner.viewmodel.database.DatabaseAdapter.Companion.mDatabaseAdapter
+import au.com.techfields.spendingplanner.viewmodel.item.CalendarMonthItemAdapter
 import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.month_picker_popup.view.*
+import kotlinx.android.synthetic.main.component_calendar_month_picker.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 
-class MonthPickerInit(activity: MainActivity, private val fragmentTransactionTabs: FragmentTransactionTabsInit) {
-    private val mPopupView: View = activity.layoutInflater.inflate(R.layout.month_picker_popup, activity.window.findViewById(R.id.container))
+class CalendarMonthPickerInit(activity: MainActivity, private val mainFragmentTabs: MainFragmentTabsInit) {
+    private val mPopupView: View = activity.layoutInflater.inflate(R.layout.component_calendar_month_picker, activity.window.findViewById(R.id.container))
     private val mYearFilteredTv: TextView = mPopupView.year_filtered_tv
     private val mDateFilteredBtn: Button = activity.month_year_filtered_btn
     private val mYearDecrementBtn: Button = mPopupView.decrement_year_btn
@@ -67,12 +68,12 @@ class MonthPickerInit(activity: MainActivity, private val fragmentTransactionTab
             mDateFilteredBtn.text = dateToString(dateInstance.time, "MMM yyyy")
             mDatabaseAdapter.sortTransactionComponentsByDate(dateInstance)
             mDatabaseAdapter.sortCategoriesByDate()
-            fragmentTransactionTabs.notifyFragmentAdaptersChanged()
+            mainFragmentTabs.notifyFragmentAdaptersChanged()
             popupWindow.dismiss()
         }
         mCloseBtn.setOnClickListener { popupWindow.dismiss() }
-        mFirstMonthsRv.adapter = MonthItemAdapter(activity, fragmentTransactionTabs, firstMonthsList, popupWindow)
-        mSecondMonthsRv.adapter = MonthItemAdapter(activity, fragmentTransactionTabs, secondMonthsList, popupWindow)
+        mFirstMonthsRv.adapter = CalendarMonthItemAdapter(activity, mainFragmentTabs, firstMonthsList, popupWindow)
+        mSecondMonthsRv.adapter = CalendarMonthItemAdapter(activity, mainFragmentTabs, secondMonthsList, popupWindow)
         mFirstMonthsRv.layoutManager = LinearLayoutManager(mPopupView.context, LinearLayoutManager.HORIZONTAL, false)
         mSecondMonthsRv.layoutManager = LinearLayoutManager(mPopupView.context, LinearLayoutManager.HORIZONTAL, false)
     }
@@ -91,13 +92,13 @@ class MonthPickerInit(activity: MainActivity, private val fragmentTransactionTab
             setDateFilteredWidget(Calendar.MONTH, 1)
             mDatabaseAdapter.sortTransactionComponentsByDate(dateInstance)
             mDatabaseAdapter.sortCategoriesByDate()
-            fragmentTransactionTabs.notifyFragmentAdaptersChanged()
+            mainFragmentTabs.notifyFragmentAdaptersChanged()
         }
         mMonthDecrementBtn.setOnClickListener {
             setDateFilteredWidget(Calendar.MONTH, -1)
             mDatabaseAdapter.sortTransactionComponentsByDate(dateInstance)
             mDatabaseAdapter.sortCategoriesByDate()
-            fragmentTransactionTabs.notifyFragmentAdaptersChanged()
+            mainFragmentTabs.notifyFragmentAdaptersChanged()
         }
     }
 

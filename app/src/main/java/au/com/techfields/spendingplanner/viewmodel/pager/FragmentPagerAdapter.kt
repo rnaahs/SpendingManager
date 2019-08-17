@@ -1,4 +1,4 @@
-package au.com.techfields.spendingplanner.viewmodel
+package au.com.techfields.spendingplanner.viewmodel.pager
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager

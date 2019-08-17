@@ -1,4 +1,4 @@
-package au.com.techfields.spendingplanner.view
+package au.com.techfields.spendingplanner.view.fragment
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -12,7 +12,7 @@ class ReportMainFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val reportView = inflater.inflate(R.layout.fragment_report_main, container, false)
+        val reportView = inflater.inflate(R.layout.fragment_main_report, container, false)
         return reportView
     }
 }

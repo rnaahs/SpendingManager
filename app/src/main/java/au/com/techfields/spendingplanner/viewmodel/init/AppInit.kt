@@ -1,4 +1,4 @@
-package au.com.techfields.spendingplanner.viewmodel
+package au.com.techfields.spendingplanner.viewmodel.init
 
 import android.app.Application
 import io.realm.Realm

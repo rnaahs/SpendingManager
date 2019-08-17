@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="au.com.techfields.spendingplanner.view.MainActivity">
+    tools:context="au.com.techfields.spendingplanner.view.activity.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -22,51 +22,48 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                >
 
-                <Button
-                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                    android:id="@+id/decrement_month_btn"
-                    android:layout_width="40dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:drawableStart="@drawable/ic_toolbar_left"
-                    android:layout_marginStart="-5dp"
-                    android:paddingStart="7.5dp"
-                    android:paddingEnd="7.5dp"
-                    />
-
-                <Button
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:id="@+id/month_year_filtered_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_toEndOf="@id/decrement_month_btn"
-                    android:layout_marginStart="-10dp"
                     android:gravity="center"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
+                    android:orientation="horizontal"
+                    >
 
-                <Button
-                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                    android:id="@+id/increment_month_btn"
-                    android:layout_width="40dp"
-                    android:layout_height="match_parent"
-                    android:layout_toEndOf="@id/month_year_filtered_btn"
-                    android:layout_marginStart="-10dp"
-                    android:drawableStart="@drawable/ic_toolbar_right"
-                    android:paddingStart="7.5dp"
-                    android:paddingEnd="7.5dp"
-                    />
+                    <Button
+                        android:id="@+id/decrement_month_btn"
+                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.4"
+                        android:drawableStart="@drawable/ic_toolbar_left"
+                        />
 
-            </RelativeLayout>
+                    <Button
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:id="@+id/month_year_filtered_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.2"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+
+                    <Button
+                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                        android:id="@+id/increment_month_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.4"
+                        android:drawableEnd="@drawable/ic_toolbar_right"
+                        />
+                </LinearLayout>
+
 
         </android.support.v7.widget.Toolbar>
 
         <android.support.design.widget.TabLayout
-            android:id="@+id/tabs"
+            android:id="@+id/maintabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </android.support.design.widget.AppBarLayout>

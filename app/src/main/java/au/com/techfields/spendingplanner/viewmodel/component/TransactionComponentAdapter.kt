@@ -1,4 +1,4 @@
-package au.com.techfields.spendingplanner.viewmodel
+package au.com.techfields.spendingplanner.viewmodel.component
 
 import au.com.techfields.spendingplanner.R
 import au.com.techfields.spendingplanner.model.Transaction
@@ -18,7 +18,8 @@ import android.text.Spannable
 import android.text.style.ForegroundColorSpan
 import android.text.SpannableString
 import android.util.DisplayMetrics
-import au.com.techfields.spendingplanner.viewmodel.MonthPickerInit.Companion.dateToString
+import au.com.techfields.spendingplanner.viewmodel.init.CalendarMonthPickerInit.Companion.dateToString
+import au.com.techfields.spendingplanner.viewmodel.item.TransactionItemAdapter
 
 class TransactionComponentAdapter(private val mTransactionComponentArrayList: ArrayList<ArrayList<Transaction>>, private val mContext: Context) : RecyclerView.Adapter<TransactionComponentAdapter.MyViewHolder>() {
     private val Int.dp get() = this * Resources.getSystem().displayMetrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT
@@ -37,7 +38,7 @@ class TransactionComponentAdapter(private val mTransactionComponentArrayList: Ar
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val componentView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.transaction_component, parent, false)
+                .inflate(R.layout.component_transaction, parent, false)
         return MyViewHolder(componentView)
     }
 
@@ -62,8 +63,8 @@ class TransactionComponentAdapter(private val mTransactionComponentArrayList: Ar
             if (transaction.mType == Transaction.TransactionType.Income.name) incomeTotalAmount += transaction.mAmount
             else expenseTotalAmount += transaction.mAmount * (-1)
         }
-        holder.mIncomeTotalTv.text = ""
-        holder.mExpenseTotalTv.text = ""
+        holder.mIncomeTotalTv.text = null
+        holder.mExpenseTotalTv.text = null
         expenseLayoutMarginParams.marginEnd = 0.dp
         if (expenseTotalAmount > 0.0) setTotalAmountToText(Transaction.TransactionType.Expense.name, expenseTotalAmount, holder.mExpenseTotalTv, R.color.expenseColor, expenseLayoutMarginParams)
         if (incomeTotalAmount > 0.0) setTotalAmountToText(Transaction.TransactionType.Income.name, incomeTotalAmount, holder.mIncomeTotalTv, R.color.incomeColor, incomeLayoutMarginParams)

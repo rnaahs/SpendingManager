@@ -1,34 +1,39 @@
-package au.com.techfields.spendingplanner.view
+package au.com.techfields.spendingplanner.view.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import au.com.techfields.spendingplanner.R
-import au.com.techfields.spendingplanner.viewmodel.DatabaseAdapter
-import au.com.techfields.spendingplanner.viewmodel.TransactionComponentAdapter
-import kotlinx.android.synthetic.main.fragment_transaction_main.view.*
-
+import au.com.techfields.spendingplanner.view.activity.AddTransactionActivity
+import au.com.techfields.spendingplanner.viewmodel.database.DatabaseAdapter
+import au.com.techfields.spendingplanner.viewmodel.component.TransactionComponentAdapter
+import io.realm.Realm
+import kotlinx.android.synthetic.main.fragment_main_transaction.view.*
 
 class TransactionMainFragment : Fragment() {
     lateinit var mTransactionComponentRv: RecyclerView
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val componentView = inflater.inflate(R.layout.fragment_transaction_main, container, false)
+        val componentView = inflater.inflate(R.layout.fragment_main_transaction, container, false)
         mTransactionComponentRv = componentView.findViewById(R.id.transaction_rv)
         mTransactionComponentRv.layoutManager = LinearLayoutManager(componentView.context)
         mTransactionComponentRv.adapter = TransactionComponentAdapter(DatabaseAdapter.mDatabaseAdapter.mTransactionComponentArrayList, componentView.context)
         componentView.add_transaction_btn.setOnClickListener {
             val intent = Intent(componentView.context, AddTransactionActivity::class.java)
-            startActivity(intent)
+            startActivityForResult(intent, container!!.resources.getInteger(R.integer.add_transaction_code))
         }
         return componentView
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        //Respond sth based on the previous activity
+        Log.d("TEST", Realm.getDefaultInstance().configuration.realmDirectory.absolutePath)
     }
 }

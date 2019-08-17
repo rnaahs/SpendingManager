@@ -1,4 +1,4 @@
-package au.com.techfields.spendingplanner.viewmodel
+package au.com.techfields.spendingplanner.viewmodel.database
 
 import android.content.Context
 import android.graphics.Point
@@ -7,7 +7,8 @@ import android.view.View
 import android.view.WindowManager
 import au.com.techfields.spendingplanner.model.Category
 import au.com.techfields.spendingplanner.model.Transaction
-import au.com.techfields.spendingplanner.viewmodel.MonthPickerInit.Companion.dateToCalendar
+import au.com.techfields.spendingplanner.viewmodel.init.CalendarMonthPickerInit.Companion.dateToCalendar
+import au.com.techfields.spendingplanner.viewmodel.item.SummaryCategoryItemAdapter
 import io.realm.ImportFlag
 import io.realm.Realm
 import io.realm.kotlin.where
@@ -34,7 +35,7 @@ class DatabaseAdapter {
         val mDatabaseAdapter: DatabaseAdapter = DatabaseAdapter()
     }
 
-    fun getSummaryCategoryTypeAdapter(summaryTypeArrayList: ArrayList<Category>) = SummaryCategoryTypeAdapter(summaryTypeArrayList)
+    fun getSummaryCategoryTypeAdapter(summaryTypeArrayList: ArrayList<Category>) = SummaryCategoryItemAdapter(summaryTypeArrayList)
 
     fun getTotalAmount(vararg totalAmountArrayLists: ArrayList<Category>): Double {
         var totalAmount = 0.0
@@ -64,6 +65,86 @@ class DatabaseAdapter {
         val transactionList = arrayListOf<Transaction>()
         transactionList.addAll(realmInstance.copyFromRealm(realmResultOfTransaction))
         realmInstance.close()
+
+
+        /*val transactionList = arrayListOf<Transaction>()
+        val calendar1 = Calendar.getInstance()
+        val calendar2 = Calendar.getInstance()
+        val calendar3 = Calendar.getInstance()
+        val calendar4 = Calendar.getInstance()
+        val calendar5 = Calendar.getInstance()
+        val calendar6 = Calendar.getInstance()
+        val calendar7 = Calendar.getInstance()
+        val calendar8 = Calendar.getInstance()
+        val calendar9 = Calendar.getInstance()
+        val calendar10 = Calendar.getInstance()
+        val calendar11 = Calendar.getInstance()
+        val calendar12 = Calendar.getInstance()
+        val calendar13 = Calendar.getInstance()
+        val calendar14 = Calendar.getInstance()
+        calendar1.set(2019, Calendar.JANUARY, 26, 10, 44, 11)
+        calendar2.set(2019, Calendar.JANUARY, 26, 11, 44, 11)
+        calendar3.set(2019, Calendar.JANUARY, 27, 10, 44, 11)
+        calendar4.set(2019, Calendar.JANUARY, 27, 11, 44, 11)
+        calendar5.set(2019, Calendar.JANUARY, 28, 10, 44, 11)
+        calendar6.set(2019, Calendar.MARCH, 26, 10, 44, 12)
+        calendar7.set(2019, Calendar.FEBRUARY, 26, 10, 44, 13)
+        calendar8.set(2019, Calendar.JANUARY, 26, 10, 44, 11)
+        calendar9.set(2019, Calendar.JANUARY, 26, 11, 44, 11)
+        calendar10.set(2019, Calendar.JANUARY, 27, 10, 44, 11)
+        calendar11.set(2019, Calendar.JANUARY, 14, 11, 44, 11)
+        calendar12.set(2019, Calendar.JANUARY, 13, 10, 44, 11)
+        calendar13.set(2019, Calendar.JANUARY, 12, 11, 44, 12)
+        calendar14.set(2019, Calendar.MARCH, 11, 10, 44, 13)
+        val transactionRecord1 = Transaction("0", "Transaction1", 500.0,  calendar1.time, Transaction.TransactionType.Income.name, "0")
+        val transactionRecord2 = Transaction("1", "Transaction2", 830.5, calendar2.time, Transaction.TransactionType.Income.name, "10")
+        val transactionRecord3 = Transaction("2", "Transaction3", -700.0, calendar3.time, Transaction.TransactionType.Expense.name, "2")
+        val transactionRecord4 = Transaction("3", "Transaction4", -130.5, calendar4.time, Transaction.TransactionType.Expense.name, "5")
+        val transactionRecord5 = Transaction("4", "Transaction5", 245.5, calendar5.time, Transaction.TransactionType.Income.name, "0")
+        val transactionRecord6 = Transaction("5", "Transaction6", -245.5, calendar6.time, Transaction.TransactionType.Expense.name, "2")
+        val transactionRecord7 = Transaction("6", "Transaction7", -70.5, calendar7.time, Transaction.TransactionType.Expense.name, "1")
+        val transactionRecord8 = Transaction("7", "Transaction8", 500.0, calendar8.time, Transaction.TransactionType.Income.name, "0")
+        val transactionRecord9 = Transaction("8", "Transaction9", -80.5, calendar9.time, Transaction.TransactionType.Expense.name, "3")
+        val transactionRecord10 = Transaction("9", "Transaction10", 560.0, calendar10.time, Transaction.TransactionType.Income.name, "0")
+        val transactionRecord11 = Transaction("10", "Transaction11", -430.5, calendar11.time, Transaction.TransactionType.Expense.name, "3")
+        val transactionRecord12 = Transaction("11", "Transaction12", -445.5, calendar12.time, Transaction.TransactionType.Expense.name, "1")
+        val transactionRecord13 = Transaction("12", "Transaction13", -545.5, calendar13.time, Transaction.TransactionType.Expense.name, "4")
+        val transactionRecord14 = Transaction("13", "Transaction14", -236.5, calendar14.time, Transaction.TransactionType.Expense.name, "2")
+        val transactionRecord15 = Transaction("14", "Transaction15", -80.5, calendar1.time, Transaction.TransactionType.Expense.name, "6")
+        val transactionRecord16 = Transaction("15", "Transaction16", 560.0, calendar1.time, Transaction.TransactionType.Income.name, "0")
+        val transactionRecord17 = Transaction("16", "Transaction17", -430.5, calendar1.time, Transaction.TransactionType.Expense.name, "7")
+        val transactionRecord18 = Transaction("17", "Transaction18", -445.5, calendar1.time, Transaction.TransactionType.Expense.name, "8")
+        val transactionRecord19 = Transaction("18", "Transaction19", 545.5, calendar1.time, Transaction.TransactionType.Income.name, "0")
+        val transactionRecord20 = Transaction("19", "Transaction20", -236.5, calendar1.time, Transaction.TransactionType.Expense.name, "9")
+        val transactionRecord21 = Transaction("20", "Transaction21", 536.5, calendar1.time, Transaction.TransactionType.Income.name, "11")
+        val transactionRecord22 = Transaction("21", "Transaction22", 336.5, calendar1.time, Transaction.TransactionType.Income.name, "12")
+        val transactionRecord23 = Transaction("22", "Transaction23", 736.5, calendar1.time, Transaction.TransactionType.Income.name, "13")
+        val transactionRecord24 = Transaction("23", "Transaction24", 436.5, calendar1.time, Transaction.TransactionType.Income.name, "14")
+        transactionList.add(transactionRecord3)
+        transactionList.add(transactionRecord1)
+        transactionList.add(transactionRecord2)
+        transactionList.add(transactionRecord5)
+        transactionList.add(transactionRecord4)
+        transactionList.add(transactionRecord6)
+        transactionList.add(transactionRecord7)
+        transactionList.add(transactionRecord8)
+        transactionList.add(transactionRecord9)
+        transactionList.add(transactionRecord10)
+        transactionList.add(transactionRecord11)
+        transactionList.add(transactionRecord12)
+        transactionList.add(transactionRecord13)
+        transactionList.add(transactionRecord14)
+        transactionList.add(transactionRecord15)
+        transactionList.add(transactionRecord16)
+        transactionList.add(transactionRecord17)
+        transactionList.add(transactionRecord18)
+        transactionList.add(transactionRecord19)
+        transactionList.add(transactionRecord20)
+        transactionList.add(transactionRecord21)
+        transactionList.add(transactionRecord22)
+        transactionList.add(transactionRecord23)
+        transactionList.add(transactionRecord24)*/
+
         return transactionList
     }
 
@@ -133,7 +214,6 @@ class DatabaseAdapter {
     private fun sortTransactionsByMonthYear(transactionSortedList: ArrayList<Transaction>, calendar: Calendar): ArrayList<Transaction> {
         val sortTransactionListByMonth = arrayListOf<Transaction>()
         for (transaction in transactionSortedList) {
-
             if (calendar.get(Calendar.YEAR) == dateToCalendar(transaction.mDate).get(Calendar.YEAR) &&
                     calendar.get(Calendar.MONTH) == dateToCalendar(transaction.mDate).get(Calendar.MONTH)) {
                 sortTransactionListByMonth.add(transaction)

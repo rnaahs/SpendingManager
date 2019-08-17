@@ -1,6 +1,5 @@
-package au.com.techfields.spendingplanner.view
+package au.com.techfields.spendingplanner.view.fragment
 
-import android.app.ActionBar
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
@@ -9,10 +8,9 @@ import android.support.v7.widget.RecyclerView
 import android.widget.TextView
 
 import au.com.techfields.spendingplanner.R
-import au.com.techfields.spendingplanner.viewmodel.DatabaseAdapter
 import android.view.*
 import au.com.techfields.spendingplanner.model.Category
-import au.com.techfields.spendingplanner.viewmodel.DatabaseAdapter.Companion.mDatabaseAdapter
+import au.com.techfields.spendingplanner.viewmodel.database.DatabaseAdapter.Companion.mDatabaseAdapter
 import java.util.ArrayList
 
 class SummaryMainFragment : Fragment() {
@@ -27,7 +25,7 @@ class SummaryMainFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        mSummaryView = inflater.inflate(R.layout.fragment_summary_main, container, false)
+        mSummaryView = inflater.inflate(R.layout.fragment_main_summary, container, false)
 
         mSummaryTotalIncomeAmountTv = mSummaryView.findViewById(R.id.total_income_amount_tv)
         mSummaryTotalIncomeAmountTv.text = setTotalAmountText(mDatabaseAdapter.totalIncomeAmount)
@@ -50,8 +48,8 @@ class SummaryMainFragment : Fragment() {
         return mSummaryView
     }
 
-    fun setTotalStatusText(amount: Double) = if (amount < 0) "Overspending" else if (amount == 0.0) "Balanced" else "Remaining"
-    fun setTotalAmountText(amount: Double) = if (amount < 0) "-\$${-1 * amount}" else if (amount == 0.0) "\$$amount" else "+\$$amount"
+    fun setTotalStatusText(amount: Double) = if (amount < 0) mSummaryView.resources.getString(R.string.summary_status_overspending) else if (amount == 0.0) mSummaryView.resources.getString(R.string.summary_status_balanced) else mSummaryView.resources.getString(R.string.summary_status_remaining)
+    fun setTotalAmountText(amount: Double) = if (amount < 0) "-\$${-1*amount}" else if (amount == 0.0) "\$$amount" else "+\$$amount"
     fun setTotalAmountColor(amount: Double, view: View) =
             when {
                 amount > 0 -> ContextCompat.getColor(view.context, R.color.incomeColor)

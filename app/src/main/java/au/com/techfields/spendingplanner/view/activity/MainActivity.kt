@@ -1,4 +1,4 @@
-package au.com.techfields.spendingplanner.view
+package au.com.techfields.spendingplanner.view.activity
 
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -8,8 +8,8 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import au.com.techfields.spendingplanner.R
-import au.com.techfields.spendingplanner.viewmodel.FragmentTransactionTabsInit
-import au.com.techfields.spendingplanner.viewmodel.MonthPickerInit
+import au.com.techfields.spendingplanner.viewmodel.init.MainFragmentTabsInit
+import au.com.techfields.spendingplanner.viewmodel.init.CalendarMonthPickerInit
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -26,8 +26,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
-        val fragmentsTabsInit = FragmentTransactionTabsInit(this)
-        MonthPickerInit(this, fragmentsTabsInit)
+        val fragmentsTabsInit = MainFragmentTabsInit(this)
+        CalendarMonthPickerInit(this, fragmentsTabsInit)
     }
 
     override fun onBackPressed() {

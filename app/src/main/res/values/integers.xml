@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Code Integer-->
+    <integer name="add_transaction_code">0</integer>
+</resources>
